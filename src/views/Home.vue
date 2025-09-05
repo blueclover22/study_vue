@@ -7,18 +7,16 @@
 
 <script>
 export default {
+  name: 'HomeComponent',
 
-  name: 'HomePage',
-  
   setup() {
-
     const getServerTime = () => {
-      return new Date().toLocaleString();
+      return new Date().toLocaleString()
     }
 
     return {
-      getServerTime
+      getServerTime,
     }
-  }
+  },
 }
 </script>

@@ -1,7 +1,9 @@
-import { HomeRouter } from './home'
+import { HomeRouter } from './home.js'
+import { AuthRouter } from './auth.js'
 
 const routes = [
-    ...HomeRouter
+    ...HomeRouter,
+    ...AuthRouter
 ]
 
 export default routes
