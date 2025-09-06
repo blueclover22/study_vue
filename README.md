@@ -3,8 +3,11 @@
 This template should help get you started developing with Vue 3 in Vite.
 
 ## version
-node : 22
-vue : 3
+- node : 22
+- vue : 3
+
+## Server
+- [springboot](https://github.com/blueclover22/study_springboot)
 
 ## vscode Setup
 
@@ -411,5 +414,21 @@ import { formatDate as format, validateEmail } from './utils.js'
 
 # study_vue 기능별 라우터
 - home.js : 홈
-- auth.js : 로그인
+- auth.js : 로그인 
+- member.js : 회원 
 
+---
+---
+# vue.js 구현 방법
+
+## Single File Component (SFC) 방식
+- Vue CLI/Vite를 통해서 프로젝트 생성
+- 완전한 SPA 구조
+- 빌드 프로세스 필요 (Webpack, Vite 등)
+- 컴포넌트 기반 (.vue)
+- 라우팅, 상태관리 등 Vue 생태계 활용 (Router, Pinia 등)
+
+## CDN 방식
+- 구성된 웹페이지에 CDN을 이용하여 일부만 Vue 적용
+- 빌드 프로세스 불필요
+- 프로토타이핑에 적합
