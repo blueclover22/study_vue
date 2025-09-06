@@ -376,7 +376,7 @@ export default {
 ---
 ---
 
-# Default Export vs Named Export
+# Default Export / Named Export
 
 ## Default Export
 ```js
@@ -408,6 +408,49 @@ import { formatDate as format, validateEmail } from './utils.js'
 - 모듈당 여러개 가능
 - 중괄호가 있고, 원하는 모듈만 선택하여 import 가능
 
+
+---
+---
+# 의존성 주입 provide / inject
+
+## provide : 데이터 제공
+```js
+// 부모 컴포넌트에서
+import { provide } from 'vue'
+
+setup() {
+  
+  const { isAuthorized, myinfo, isAdmin, isMember, signin } = useAuth()
+  
+  // 전역적으로 제공할 데이터들을 등록 : provide('키', 값)
+  provide('isAuthorized', isAuthorized)
+  provide('myinfo', myinfo)
+  provide('isAdmin', isAdmin)
+  provide('isMember', isMember)
+  provide('signin', signin)
+}
+```
+
+## inject : 의존성 주입
+```js
+// 자식 컴포넌트에서
+import { inject } from 'vue'
+
+export default {
+  setup() {
+    // 부모 컴포넌트에서 제공한 데이터들을 주입받기 : inject('키')
+    const isAuthorized = inject('isAuthorized')
+    const myinfo = inject('myinfo')
+    const signin = inject('signin')
+    
+    return {
+      isAuthorized,
+      myinfo,
+      signin
+    }
+  }
+}
+```
 
 ---
 ---
