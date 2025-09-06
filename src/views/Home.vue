@@ -7,8 +7,6 @@
 
 <script>
 
-console.log('Home.vue in');
-
 export default {
   name: 'HomeComponent',
 

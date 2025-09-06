@@ -35,7 +35,10 @@ export default {
     const password = ref('')
 
     const fireSignin = () => {
-      context.emit('sign-in', userId.value, password.value)
+      context.emit('sign-in', {
+        userId: userId.value,
+        password: password.value,
+      })
     }
 
     return {

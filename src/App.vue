@@ -7,8 +7,6 @@
 
 <script>
 
-console.log('App.vue in');
-
 export default {
   name: 'App',
 }

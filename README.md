@@ -6,7 +6,7 @@ This template should help get you started developing with Vue 3 in Vite.
 node : 22
 vue : 3
 
-## Recommended IDE Setup
+## vscode Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
@@ -32,12 +32,8 @@ npm run dev
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
 
-```sh
-npm run lint
-```
-
+---
 ---
 
 # New vue project setting
@@ -91,6 +87,7 @@ npm install
 npm run dev
 ```
 
+---
 ---
 
 # study_vue 기본 구조
@@ -232,3 +229,187 @@ export const HomeRouter = [
   },
 ]
 ```
+
+---
+---
+# 부모 - 자식 컴포넌트 연결 구조 [ex. AdminSetup.vue(부모) - AdminSetupForm.vue(자식)]
+
+- **AdminSetup.vue / 부모**
+```vue
+<template>
+  <div align="center">
+    <h2>Admin Setup</h2>
+    <!-- 자식 컴포넌트 AdminSetupForm을 kebab-case로 사용 -->
+    <!-- @register-admin은 자식에서 발생하는 커스텀 이벤트를 수신 -->
+    <!-- registerAdmin 함수를 이벤트 핸들러로 연결 -->
+    <admin-setup-form @register-admin="registerAdmin" />
+  </div>
+</template>
+
+<script>
+// 자식 컴포넌트 import
+import AdminSetupForm from '../../components/member/AdminSetupForm.vue'
+// HTTP 클라이언트 import
+import client from '../../modules/client'
+// 라우터 import
+import { router } from '../../router/router'
+
+export default {
+  name: 'AdminSetupComponent',
+  // 사용할 자식 컴포넌트 등록
+  // PascalCase 로 등록
+  components: {
+    AdminSetupForm,
+  },
+
+  setup() {
+    // 자식 컴포넌트에서 발생한 'register-admin' 이벤트를 처리하는 함수
+    // adminData 매개변수는 자식에서 emit으로 전달한 데이터 객체
+    const registerAdmin = (adminData) => {
+      // 구조분해할당으로 관리자 정보 추출
+      const { userId, userPw, userName } = adminData
+      
+      // 백엔드 API에 관리자 등록 요청 전송
+      client
+        .post('/users/setup', { userId, userPw, userName })
+        .then((response) => {
+          router.push({               // 홈 페이지로 라우팅
+            name: 'HomeRouter',
+          })
+        })
+        .catch((error) => {
+          alert(error.response.data)  
+        })
+    }
+    
+    // 템플릿에서 사용할 함수 반환
+    return {
+      registerAdmin,
+    }
+  },
+}
+</script>
+```
+
+- **AdminSetupForm.vue / 자식**
+```vue
+<template>
+  <!-- 폼 제출 이벤트를 fireResgisterAdmin 함수에 바인딩 -->
+  <!-- .prevent는 기본 폼 제출 동작을 막고 preventDefault()를 자동 호출 -->
+  <form @submit.prevent="fireResgisterAdmin">
+    <table>
+      <tbody>
+        <tr>
+          <td>관리자 아이디 :</td>
+          <td>
+            <!-- v-model로 userId ref 변수와 양방향 바인딩 -->
+            <input type="text" v-model="userId" />
+          </td>
+        </tr>
+        <tr>
+          <td>관리자 비밀번호 :</td>
+          <td>
+            <!-- v-model로 userPw ref 변수와 양방향 바인딩 -->
+            <input type="text" v-model="userPw" />
+          </td>
+        </tr>
+        <tr>
+          <td>관리자 이름 :</td>
+          <td>
+            <!-- v-model로 userName ref 변수와 양방향 바인딩 -->
+            <input type="text" v-model="userName" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <!-- 폼 제출을 트리거하는 버튼 -->
+      <button type="submit">등록</button>
+    </div>
+  </form>
+</template>
+
+<script>
+import { ref } from 'vue'
+
+export default {
+  name: 'AdminSetupFormComponent',
+  // 부모에게 전달할 이벤트 목록 선언
+  emits: ['register-admin'],
+
+  setup(props, context) {
+    // 반응형 변수들 선언 및 초기화
+    const userId = ref('')    // 관리자 아이디
+    const userPw = ref('')    // 관리자 비밀번호
+    const userName = ref('')  // 관리자 이름
+
+    // 폼 제출 시 실행되는 함수
+    // event 매개변수는 @submit 이벤트에서 자동으로 전달되는 이벤트 객체
+    const fireResgisterAdmin = (event) => {
+      // 디버깅용 로그 (실제로는 사용하지 않음)
+      console.log(event)
+      
+      // 부모 컴포넌트에게 'register-admin' 이벤트 발생
+      // 두 번째 매개변수로 관리자 정보 객체를 전달
+      context.emit('register-admin', {
+        userId: userId.value,    
+        userPw: userPw.value,
+        userName: userName.value,
+      })
+    }
+
+    // 템플릿에서 사용할 변수와 함수들을 반환
+    return {
+      userId,
+      userPw,
+      userName,
+      fireResgisterAdmin,
+    }
+  },
+}
+</script>
+```
+
+---
+---
+
+# Default Export vs Named Export
+
+## Default Export
+```js
+// export
+export default function add(a, b) {
+  return a + b
+}
+
+// import
+import add from './math.js'           
+import myAdd from './math.js'         
+import whatever from './math.js'     
+```
+- 모듈당 1개만 가능
+- import시 중괄호가 없고 임의의 명칭으로 import 가능
+- 모듈의 주요 기능을 export 할때 적합
+
+## Named Export
+```js
+// export
+export const formatDate = (date) => { ... }
+export const formatCurrency = (amount) => { ... }
+export const validateEmail = (email) => { ... }
+
+// import
+import { formatDate, formatCurrency } from './utils.js'
+import { formatDate as format, validateEmail } from './utils.js'
+```
+- 모듈당 여러개 가능
+- 중괄호가 있고, 원하는 모듈만 선택하여 import 가능
+
+
+---
+---
+
+# study_vue 기능별 라우터
+- home.js : 홈
+- auth.js : 로그인
+
