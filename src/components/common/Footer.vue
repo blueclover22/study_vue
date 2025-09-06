@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+console.log('Footer.vue in');
+  
 export default {
   name: 'MainFooter',
 }

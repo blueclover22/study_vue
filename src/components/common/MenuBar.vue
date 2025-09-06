@@ -13,7 +13,10 @@
 </template>
 
 <script>
-export default {
+
+console.log('MenuBar.vue in');
+
+export default {  
   name: 'MenuBar',
 }
 </script>

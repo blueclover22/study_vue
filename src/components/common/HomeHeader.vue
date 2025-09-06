@@ -5,6 +5,9 @@
 </template>
 
 <script>
+
+console.log('HomeHeader.vue in');
+
 export default {
   name: 'HomeHeader',
 }

@@ -8,6 +8,8 @@
 <script>
 import SigninForm from './SigninForm.vue'
 
+console.log('Signin.vue in');
+
 export default {
   name: 'SigninComponent',
   components: {

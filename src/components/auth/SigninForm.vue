@@ -25,6 +25,8 @@
 <script>
 import { ref } from 'vue'
 
+console.log('SigninForm.vue in');
+
 export default {
   name: 'SigninFormComponent',
   emits: ['sign-in'],
