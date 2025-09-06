@@ -1,13 +1,10 @@
 <template>
-  <div  align="right">
-    <Router-Link to="{name : 'HomeRouter'}">LOG IN</Router-Link>
+  <div align="right">
+    <router-link :to="{ name: 'SigninRouter' }">LOG IN</router-link>
   </div>
 </template>
 
 <script>
-
-console.log('MainHeader.vue in');
-
 export default {
   name: 'MainHeader',
 }

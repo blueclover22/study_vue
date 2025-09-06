@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td width="120">
-            <router-link :to="{name: 'HomeRouter'}">Home</router-link>
+            <router-link :to="{ name: 'HomeRouter' }">Home</router-link>
           </td>
         </tr>
       </tbody>
@@ -13,10 +13,7 @@
 </template>
 
 <script>
-
-console.log('MenuBar.vue in');
-
-export default {  
+export default {
   name: 'MenuBar',
 }
 </script>

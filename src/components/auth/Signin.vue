@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div align="center">
     <h2>Login</h2>
     <signin-form />
   </div>
@@ -7,8 +7,6 @@
 
 <script>
 import SigninForm from './SigninForm.vue'
-
-console.log('Signin.vue in');
 
 export default {
   name: 'SigninComponent',
