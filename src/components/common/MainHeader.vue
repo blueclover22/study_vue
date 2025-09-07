@@ -1,7 +1,7 @@
 <template>
   <div align="right">
-    <div v-if="isAuthorized">
-      <span>{{ myinfo.userName }}님 환영합니다.</span>
+    <div v-if="authStore.isAuthorized">
+      <span>{{ authStore.myinfo.userName }}님 환영합니다.</span>
 
       <button @click="logout">LOG OUT</button>
     </div>
@@ -12,26 +12,23 @@
 </template>
 
 <script>
-import { inject } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import router from '@/router/router'
 
 export default {
   name: 'MainHeader',
 
   setup() {
-    const isAuthorized = inject('isAuthorized')
-    const myinfo = inject('myinfo')
-    const signout = inject('signout')
+    const authStore = useAuthStore()
 
     const logout = () => {
-      signout()
+      authStore.signout()
       alert('로그아웃')
       router.push({ name: 'HomeRouter' })
     }
 
     return {
-      isAuthorized,
-      myinfo,
+      authStore,
       logout,
     }
   },

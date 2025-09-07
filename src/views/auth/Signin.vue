@@ -8,7 +8,7 @@
 <script>
 import SigninForm from '@/components/auth/SigninForm.vue'
 import router from '@/router/router'
-import { inject } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 export default {
   name: 'SigninComponent',
@@ -16,19 +16,18 @@ export default {
     SigninForm,
   },
   setup() {
-    const signin = inject('signin')
+    const authStore = useAuthStore()
 
-    const login = (payload) => {
-      signin(payload)
-        .then(() => {
-          alert('로그인 성공')
-          router.push({
-            name: 'HomeRouter',
-          })
+    const login = async (payload) => {
+      try {
+        await authStore.signin(payload)
+        alert('로그인 성공')
+        router.push({
+          name: 'HomeRouter',
         })
-        .catch((error) => {
-          alert(error.response.data)
-        })
+      } catch (error) {
+        alert(error.response?.data || '로그인에 실패했습니다.')
+      }
     }
 
     return {

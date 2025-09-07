@@ -1,3 +1,5 @@
+// 이 파일은 Pinia 마이그레이션 후 제거될 예정입니다.
+
 import { reactive, computed } from 'vue'
 import client from '@/modules/client'
 

@@ -467,6 +467,117 @@ export default {
 
 ---
 ---
+# Pinia 
+- Vue 공식 상태 관리 라이브러리
+- Composition API 스타일
+- TypeScript 지원
+- DevTools 지원: Vue DevTools와 완벽하게 통합
+- 모듈화: 자동으로 코드 분할되는 스토어
+- 간단한 API: 복잡한 mutations 없이 직접 상태 변경 가능
+
+## pinia 세팅
+```js
+// main.js
+import { createPinia } from 'pinia'
+
+const app = createApp(App)
+const pinia = createPinia()
+
+app.use(pinia)  // Pinia를 Vue 앱에 등록
+```
+- 소스 구현 : /sotres/*.js
+
+## pinia 구성
+- State :  애플리케이션의 데이터를 저장하는 반응형 상태
+  - 반응형: ref()를 사용하여 Vue의 반응형 시스템과 통합
+  - 직접 접근: 컴포넌트에서 store.stateName으로 직접 접근 가능
+  - 자동 업데이트: State가 변경되면 이를 사용하는 모든 컴포넌트가 자동으로 리렌더링
+
+  ```js
+  // stores/auth.js
+  const accessToken = ref('')        // JWT 토큰 저장
+  const myinfo = ref(null)          // 사용자 정보 저장
+  ```
+
+- Getter : State를 기반으로 계산된 값을 반환하는 읽기 전용 속성
+  - 캐싱: computed()를 사용하여 의존성이 변경될 때만 재계산
+  - 읽기 전용: State를 직접 변경하지 않고 계산된 값만 반환
+  - 조합 가능: 다른 Getter를 참조할 수 있음 (예: isAdmin이 isAuthorized를 참조)
+
+  ```js
+  // stores/auth.js
+  const isAuthorized = computed(() => {
+    return accessToken.value.length > 0 && !!myinfo.value
+  })
+
+  const isAdmin = computed(() => {
+    if (!myinfo.value || !myinfo.value.authList) {
+      return false
+    }
+    return isAuthorized.value && myinfo.value.authList[0].auth === 'ROLE_ADMIN'
+  })
+
+  const isMember = computed(() => {
+    if (!myinfo.value || !myinfo.value.authList) {
+      return false
+    }
+    return isAuthorized.value && myinfo.value.authList[0].auth === 'ROLE_MEMBER'
+  })
+  ```
+
+- Action : State를 변경하거나 비동기 작업을 수행하는 메서드
+  - 비동기 지원: async/await를 사용한 비동기 작업 처리
+  - State 변경: Action 내에서 State를 직접 변경 가능
+  - 에러 처리: try-catch를 통한 적절한 에러 처리
+  - API 호출, 쿠키 조작 등 외부 시스템과의 상호작용
+
+  ```js
+
+  // stores/auth.js
+
+  // 로그인 액션
+  const signin = async (payload) => {
+    try {
+      // 1. 로그인 API 호출
+      const response = await client.post('/api/authenticate', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+
+      // 2. 토큰 추출 및 State 업데이트
+      const { authorization } = response.headers
+      const token = authorization.substring(7)
+      accessToken.value = token
+      client.defaults.headers.common.Authorization = `Bearer ${token}`
+      Cookies.set('accessToken', token, { expires: 1 })
+
+      // 3. 사용자 정보 조회 및 State 업데이트
+      const myInfoResponse = await client.get('/users/myInfo')
+      myinfo.value = myInfoResponse.data
+
+      return myInfoResponse
+    } catch (error) {
+      // 4. 에러 시 State 초기화
+      accessToken.value = ''
+      myinfo.value = null
+      delete client.defaults.headers.common.Authorization
+      Cookies.remove('accessToken')
+      throw error
+    }
+  }
+
+  // 로그아웃 액션
+  const signout = () => {
+    accessToken.value = ''
+    myinfo.value = null
+    delete client.defaults.headers.common.Authorization
+    Cookies.remove('accessToken')
+  }
+  ```
+
+---
+---
 
 # study_vue 기능별 라우터
 - home.js : 홈

@@ -2,28 +2,32 @@
   <div align="center">
     <h2>코드그룹 목록</h2>
     <router-link :to="{ name: 'CodeGroupRegisterRouter' }">등록</router-link>
-    <code-group-list-form :codeGroups="codeGroups" />
+    <code-group-list-form :codeGroups="codeGroupStore.codeGroups" />
   </div>
 </template>
 
 <script>
 import CodeGroupListForm from '@/components/codeGroup/CodeGroupListForm.vue'
-import { inject, onMounted } from 'vue'
+import { useCodeGroupStore } from '@/stores/codeGroup'
+import { onMounted } from 'vue'
 
 export default {
   name: 'CodeGroupList',
   components: { CodeGroupListForm },
 
   setup() {
-    const codeGroups = inject('codeGroups')
-    const fetchCodeGroupList = inject('fetchCodeGroupList')
+    const codeGroupStore = useCodeGroupStore()
 
-    onMounted(() => {
-      fetchCodeGroupList()
+    onMounted(async () => {
+      try {
+        await codeGroupStore.fetchCodeGroupList()
+      } catch (error) {
+        console.error('Failed to fetch code group list:', error)
+      }
     })
 
     return {
-      codeGroups
+      codeGroupStore
     }
   }
 }

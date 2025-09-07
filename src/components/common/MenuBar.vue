@@ -3,8 +3,8 @@
     <table>
       <tbody>
         <tr>
-          <template v-if="isAuthorized">
-            <template v-if="isAdmin">
+          <template v-if="authStore.isAuthorized">
+            <template v-if="authStore.isAdmin">
               <td width="120">
                 <router-link :to="{ name: 'HomeRouter' }">Home</router-link>
               </td>
@@ -30,17 +30,16 @@
 </template>
 
 <script>
-import { inject } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 export default {
   name: 'MenuBar',
   setup() {
-    const isAuthorized = inject('isAuthorized')
-    const isAdmin = inject('isAdmin')
+    const authStore = useAuthStore()
 
     return {
-      isAuthorized,
-      isAdmin,
+      // 스토어 자체를 반환하여 반응성 유지
+      authStore,
     }
   },
 }
