@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import AdminSetupForm from '../../components/member/AdminSetupForm.vue'
-import client from '../../modules/client'
-import router from '../../router/router'
+import AdminSetupForm from '@/components/member/AdminSetupForm.vue'
+import client from '@/modules/client'
+import router from '@/router/router'
 
 export default {
   name: 'AdminSetupComponent',

@@ -454,11 +454,25 @@ export default {
 
 ---
 ---
+# 데이터 바인딩 :value vs v-model
+## :value (v-bind:value)
+- 단방향 바인딩
+- 데이터 변경 불가능
+- 사용자의 입력이 데이터에 영향을 주지 않음
+
+## v-model
+- 양방향 바인딘
+- 데이터 변경 가능
+- 사용자 입력이 데이터를 변경하고, 데이터 변경이 input에 반영됨
+
+---
+---
 
 # study_vue 기능별 라우터
 - home.js : 홈
-- auth.js : 로그인 
+- auth.js : 로그인
 - member.js : 회원 
+- codegroup.js : 코드그룹
 
 ---
 ---

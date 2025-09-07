@@ -1,5 +1,6 @@
 import { reactive, computed } from 'vue'
-import client from '../modules/client'
+import client from '@/modules/client'
+import Cookies from 'js-cookie'
 
 export const useAuth = () => {
   const auth = reactive({
@@ -31,6 +32,8 @@ export const useAuth = () => {
       auth.accessToken = accessToken
 
       client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+
+      Cookies.set('accessToken', accessToken, { expires: 1 })
     }
   }
 
@@ -38,6 +41,16 @@ export const useAuth = () => {
     if (myinfo) {
       auth.myinfo = myinfo
     }
+  }
+
+  const DESTROY_ACCESS_TOKEN = () => {
+    auth.accessToken = ''
+    delete client.defaults.headers.common.Authorization
+    Cookies.remove('accessToken')
+  }
+
+  const DESTROY_MY_INFO = () => {
+    auth.myinfo = null
   }
 
   const signin = (payload) => {
@@ -56,11 +69,22 @@ export const useAuth = () => {
         const accessToken = authorization.substring(7)
         SET_ACCESS_TOKEN(accessToken)
 
-        return client.get('/users/myInfo')
-          .then((response) => {
-            SET_MY_INFO(response.data)
-          })
+        return client.get('/users/myInfo').then((response) => {
+          SET_MY_INFO(response.data)
+        })
       })
+  }
+
+  const signout = () => {
+    DESTROY_ACCESS_TOKEN()
+    DESTROY_MY_INFO()
+  }
+
+  const signinByToken = (token) => {
+    SET_ACCESS_TOKEN(token)
+    return client.get('/users/myInfo').then((response) => {
+      SET_MY_INFO(response.data)
+    })
   }
 
   return {
@@ -69,5 +93,7 @@ export const useAuth = () => {
     myinfo,
     isAdmin,
     isMember,
+    signinByToken,
+    signout,
   }
 }

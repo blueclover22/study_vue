@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import SigninForm from '../../components/auth/SigninForm.vue'
-import router from '../../router/router'
+import SigninForm from '@/components/auth/SigninForm.vue'
+import router from '@/router/router'
 import { inject } from 'vue'
 
 export default {

@@ -1,11 +1,13 @@
-import { HomeRouter } from './home.js'
-import { AuthRouter } from './auth.js'
-import { MemberRouter } from './member.js'
+import { HomeRouter } from '@/router/home.js'
+import { AuthRouter } from '@/router/auth.js'
+import { MemberRouter } from '@/router/member.js'
+import { CodeGroupRouter } from '@/router/codegroup.js'
 
 const routes = [
     ...HomeRouter,
     ...AuthRouter,
-    ...MemberRouter
+    ...MemberRouter,
+    ...CodeGroupRouter
 ]
 
 export default routes
