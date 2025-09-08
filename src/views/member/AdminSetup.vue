@@ -17,6 +17,14 @@ export default {
   },
 
   setup() {
+    const handleError = (error) => {
+      if (error.response?.data) {
+        alert(error.response.data)
+      } else {
+        alert('관리자 등록에 실패했습니다.')
+      }
+    }
+
     const registerAdmin = (payload) => {
       const { userId, userPw, userName } = payload
       client
@@ -29,7 +37,7 @@ export default {
           })
         })
         .catch((error) => {
-          alert(error.response.data)
+          handleError(error)
         })
     }
     return {

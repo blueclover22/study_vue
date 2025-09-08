@@ -18,6 +18,14 @@ export default {
   setup() {
     const authStore = useAuthStore()
 
+    const handleError = (error) => {
+      if (error.response?.data) {
+        alert(error.response.data)
+      } else {
+        alert('로그인에 실패했습니다.')
+      }
+    }
+
     const login = async (payload) => {
       try {
         await authStore.signin(payload)
@@ -26,7 +34,7 @@ export default {
           name: 'HomeRouter',
         })
       } catch (error) {
-        alert(error.response?.data || '로그인에 실패했습니다.')
+        handleError(error)
       }
     }
 

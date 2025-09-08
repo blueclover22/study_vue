@@ -14,9 +14,24 @@ import router from '@/router/router'
 export default {
   name: 'CodeGroupRegister',
   components: { CodeGroupRegisterForm },
-  
+
   setup() {
     const codeGroupStore = useCodeGroupStore()
+
+    const handleError = (result) => {
+      if (!result.success) {
+        if (result.error.type === 'auth') {
+          alert(result.error.message)
+          router.push({ name: 'SigninRouter' })
+        } else if (result.error.type === 'permission') {
+          alert(result.error.message)
+          router.back()
+        } else {
+          alert(result.error.message)
+          router.back()
+        }
+      }
+    }
 
     const addPost = async (payload) => {
       const { groupCode, groupName } = payload
@@ -29,15 +44,7 @@ export default {
           params: { groupCode: result.data.groupCode },
         })
       } else {
-        if (result.error.type === 'auth') {
-          alert(result.error.message)
-          router.push({ name: 'SigninRouter' })
-        } else if (result.error.type === 'permission') {
-          alert(result.error.message)
-          router.back()
-        } else {
-          alert(result.error.message)
-        }
+        handleError(result)
       }
     }
 

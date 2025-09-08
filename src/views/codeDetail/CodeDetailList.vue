@@ -24,15 +24,25 @@ export default {
   setup() {
     const codeDetailStore = useCodeDetailStore()
 
-    onMounted(async () => {
-      const result = await codeDetailStore.fetchCodeDetailList()
+    const handleError = (result) => {
       if (!result.success) {
         if (result.error.type === 'auth') {
           alert(result.error.message)
           router.push({ name: 'SigninRouter' })
+        } else if (result.error.type === 'permission') {
+          alert(result.error.message)
+          router.back()
         } else {
           alert(result.error.message)
+          router.back()
         }
+      }
+    }
+
+    onMounted(async () => {
+      const result = await codeDetailStore.fetchCodeDetailList()
+      if (!result.success) {
+        handleError(result)
         console.error('Failed to fetch code detail list:', result.error)
       }
     })

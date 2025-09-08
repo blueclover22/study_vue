@@ -27,20 +27,26 @@ export default {
     const codeGroupStore = useCodeGroupStore()
     const groupCode = route.params.groupCode
 
+    const handleError = (result) => {
+      if (!result.success) {
+        if (result.error.type === 'auth') {
+          alert(result.error.message)
+          router.push({ name: 'SigninRouter' })
+        } else if (result.error.type === 'permission') {
+          alert(result.error.message)
+          router.back()
+        } else {
+          alert(result.error.message)
+          router.back()
+        }
+      }
+    }
+
     onMounted(async () => {
       if (groupCode) {
         const result = await codeGroupStore.fetchCodeGroup(groupCode)
         if (!result.success) {
-          if (result.error.type === 'auth') {
-            alert(result.error.message)
-            router.push({ name: 'SigninRouter' })
-          } else if (result.error.type === 'permission') {
-            alert(result.error.message)
-            router.back()
-          } else {
-            alert(result.error.message)
-            router.back()
-          }
+          handleError(result)
         }
       }
     })
@@ -53,15 +59,7 @@ export default {
         alert('수정 완료')
         router.push({ name: 'CodeGroupReadRouter', params: { groupCode: groupCode } })
       } else {
-        if (result.error.type === 'auth') {
-          alert(result.error.message)
-          router.push({ name: 'SigninRouter' })
-        } else if (result.error.type === 'permission') {
-          alert(result.error.message)
-          router.back()
-        } else {
-          alert(result.error.message)
-        }
+        handleError(result)
       }
     }
 

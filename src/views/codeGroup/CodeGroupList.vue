@@ -21,15 +21,25 @@ export default {
   setup() {
     const codeGroupStore = useCodeGroupStore()
 
-    onMounted(async () => {
-      const result = await codeGroupStore.fetchCodeGroupList()
+    const handleError = (result) => {
       if (!result.success) {
         if (result.error.type === 'auth') {
           alert(result.error.message)
           router.push({ name: 'SigninRouter' })
+        } else if (result.error.type === 'permission') {
+          alert(result.error.message)
+          router.back()
         } else {
           alert(result.error.message)
+          router.back()
         }
+      }
+    }
+
+    onMounted(async () => {
+      const result = await codeGroupStore.fetchCodeGroupList()
+      if (!result.success) {
+        handleError(result)
         console.error('Failed to fetch code group list:', result.error)
       }
     })

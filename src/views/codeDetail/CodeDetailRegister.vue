@@ -25,8 +25,7 @@ export default {
     const codeDetailStore = useCodeDetailStore()
     const codeGroupStore = useCodeGroupStore()
 
-    onMounted(async () => {
-      const result = await codeGroupStore.fetchCodeGroupList()
+    const handleError = (result) => {
       if (!result.success) {
         if (result.error.type === 'auth') {
           alert(result.error.message)
@@ -36,27 +35,27 @@ export default {
           router.back()
         } else {
           alert(result.error.message)
+          router.back()
         }
+      }
+    }
+
+    onMounted(async () => {
+      const result = await codeGroupStore.fetchCodeGroupList()
+      if (!result.success) {
+        handleError(result)
       }
     })
 
     const addPost = async (payload) => {
       const { groupCode, codeValue, codeName } = payload
       const result = await codeDetailStore.createCodeDetail({ groupCode, codeValue, codeName })
-      
+
       if (result.success) {
         alert('등록 완료')
         router.push({ name: 'CodeDetailListRouter' })
       } else {
-        if (result.error.type === 'auth') {
-          alert(result.error.message)
-          router.push({ name: 'SigninRouter' })
-        } else if (result.error.type === 'permission') {
-          alert(result.error.message)
-          router.back()
-        } else {
-          alert(result.error.message)
-        }
+        handleError(result)
       }
     }
 
