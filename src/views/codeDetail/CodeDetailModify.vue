@@ -1,35 +1,37 @@
 <template>
   <div align="center">
-    <h2>코드그룹 수정</h2>
-    <code-group-modify-form
-      v-if="!codeGroupStore.loading && codeGroupStore.codeGroup"
-      :codeGroup="codeGroupStore.codeGroup"
+    <h2>코드상세 수정</h2>
+    <code-detail-modify-form
+      v-if="!codeDetailStore.loading && codeDetailStore.codeDetail"
+      :codeDetail="codeDetailStore.codeDetail"
+      :codeGroups="codeDetailStore.codeGroups"
       @modify-post="modifyPost"
     />
-    <p v-else-if="codeGroupStore.loading">데이터를 불러오는 중...</p>
+    <p v-else-if="codeDetailStore.loading">데이터를 불러오는 중...</p>
     <p v-else>데이터를 불러올 수 없습니다.</p>
   </div>
 </template>
 
 <script>
-import CodeGroupModifyForm from '@/components/codeGroup/CodeGroupModifyForm.vue'
-import { useCodeGroupStore } from '@/stores/codeGroup'
+import CodeDetailModifyForm from '@/components/codeDetail/CodeDetailModifyForm.vue'
+import { useCodeDetailStore } from '@/stores/codeDetail'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router/router'
 
 export default {
-  name: 'CodeGroupModify',
-  components: { CodeGroupModifyForm },
+  name: 'CodeDetailModify',
+  components: { CodeDetailModifyForm },
 
   setup() {
     const route = useRoute()
-    const codeGroupStore = useCodeGroupStore()
+    const codeDetailStore = useCodeDetailStore()
     const groupCode = route.params.groupCode
+    const codeValue = route.params.codeValue
 
     onMounted(async () => {
-      if (groupCode) {
-        const result = await codeGroupStore.fetchCodeGroup(groupCode)
+      if (groupCode && codeValue) {
+        const result = await codeDetailStore.fetchCodeDetail(groupCode, codeValue)
         if (!result.success) {
           if (result.error.type === 'auth') {
             alert(result.error.message)
@@ -46,12 +48,18 @@ export default {
     })
 
     const modifyPost = async (payload) => {
-      const { groupName } = payload
-      const result = await codeGroupStore.updateCodeGroup(groupCode, { groupName })
+      const { groupCode, codeValue, codeName } = payload
+      const result = await codeDetailStore.updateCodeDetail(groupCode, codeValue, {
+        codeValue,
+        codeName,
+      })
 
       if (result.success) {
         alert('수정 완료')
-        router.push({ name: 'CodeGroupReadRouter', params: { groupCode: groupCode } })
+        router.push({
+          name: 'CodeDetailReadRouter',
+          params: { groupCode: groupCode, codeValue: codeValue },
+        })
       } else {
         if (result.error.type === 'auth') {
           alert(result.error.message)
@@ -66,8 +74,9 @@ export default {
     }
 
     return {
-      codeGroupStore,
+      codeDetailStore,
       groupCode,
+      codeValue,
       modifyPost,
     }
   },

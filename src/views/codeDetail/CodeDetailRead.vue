@@ -1,39 +1,45 @@
 <template>
   <div align="center">
-    <h2>코드그룹 상세조회</h2>
-    <code-group-read-form
-      v-if="!codeGroupStore.loading && codeGroupStore.codeGroup"
-      :codeGroup="codeGroupStore.codeGroup"
+    <h2>코드 상세조회</h2>
+    <code-detail-read-form
+      v-if="!codeDetailStore.loading && codeDetailStore.codeDetail && codeDetailStore.codeGroups"
+      :codeDetail="codeDetailStore.codeDetail"
+      :codeGroups="codeDetailStore.codeGroups"
     />
-    <p v-else-if="codeGroupStore.loading">데이터를 불러오는 중...</p>
+    <p v-else-if="codeDetailStore.loading">데이터를 불러오는 중...</p>
     <p v-else>데이터를 불러올 수 없습니다.</p>
-    <div v-if="!codeGroupStore.loading && codeGroupStore.codeGroup">
-      <router-link :to="{ name: 'CodeGroupModifyRouter', params: { groupCode } }">수정</router-link>
+    <div
+      v-if="!codeDetailStore.loading && codeDetailStore.codeDetail && codeDetailStore.codeGroups"
+    >
+      <router-link :to="{ name: 'CodeDetailModifyRouter', params: { groupCode, codeValue } }"
+        >수정</router-link
+      >
       <button @click="deletePost">삭제</button>
-      <router-link :to="{ name: 'CodeGroupListRouter' }">목록</router-link>
+      <router-link :to="{ name: 'CodeDetailListRouter' }">목록</router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { useCodeGroupStore } from '@/stores/codeGroup'
+import CodeDetailReadForm from '@/components/codeDetail/CodeDetailReadForm.vue'
+import { useCodeDetailStore } from '@/stores/codeDetail'
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import router from '@/router/router'
-import CodeGroupReadForm from '@/components/codeGroup/CodeGroupReadForm.vue'
 
 export default {
-  name: 'CodeGroupRead',
-  components: { CodeGroupReadForm },
-  
+  name: 'CodeDetailRead',
+  components: { CodeDetailReadForm },
+
   setup() {
     const route = useRoute()
-    const codeGroupStore = useCodeGroupStore()
+    const codeDetailStore = useCodeDetailStore()
     const groupCode = route.params.groupCode
+    const codeValue = route.params.codeValue
 
     onMounted(async () => {
-      if (groupCode) {
-        const result = await codeGroupStore.fetchCodeGroup(groupCode)
+      if (groupCode && codeValue) {
+        const result = await codeDetailStore.fetchCodeDetail(groupCode, codeValue)
         if (!result.success) {
           if (result.error.type === 'auth') {
             alert(result.error.message)
@@ -50,12 +56,11 @@ export default {
     })
 
     const deletePost = async () => {
-      const { groupCode } = codeGroupStore.codeGroup
-      const result = await codeGroupStore.deleteCodeGroup(groupCode)
-
+      const { groupCode, codeValue } = codeDetailStore.codeDetail
+      const result = await codeDetailStore.deleteCodeDetail(groupCode, codeValue)
       if (result.success) {
         alert('삭제 완료')
-        router.push({ name: 'CodeGroupListRouter' })
+        router.push({ name: 'CodeDetailListRouter' })
       } else {
         if (result.error.type === 'auth') {
           alert(result.error.message)
@@ -70,8 +75,9 @@ export default {
     }
 
     return {
-      codeGroupStore,
+      codeDetailStore,
       groupCode,
+      codeValue,
       deletePost,
     }
   },

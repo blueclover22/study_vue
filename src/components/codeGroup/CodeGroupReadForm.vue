@@ -26,7 +26,7 @@ export default {
     codeGroup: {
       type: Object,
       required: true,
-    }
-  }
+    },
+  },
 }
 </script>

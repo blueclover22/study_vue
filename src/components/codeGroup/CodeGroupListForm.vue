@@ -15,7 +15,10 @@
         <tr v-else v-for="codeGroup in codeGroups" :key="codeGroup.groupCode">
           <td align="center">{{ codeGroup.groupCode }}</td>
           <td align="left">
-            <router-link :to="{ name: 'CodeGroupReadRouter', params: { groupCode: codeGroup.groupCode } }">{{ codeGroup.groupName }}</router-link>
+            <router-link
+              :to="{ name: 'CodeGroupReadRouter', params: { groupCode: codeGroup.groupCode } }"
+              >{{ codeGroup.groupName }}</router-link
+            >
           </td>
           <td align="center">{{ codeGroup.regDate }}</td>
         </tr>
@@ -29,7 +32,7 @@ export default {
   name: 'CodeGroupListForm',
   props: {
     codeGroups: {
-      type: Array
+      type: Array,
     },
   },
 }

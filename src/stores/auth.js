@@ -27,7 +27,6 @@ export const useAuthStore = defineStore('auth', () => {
     return isAuthorized.value && myinfo.value.authList[0].auth === 'ROLE_MEMBER'
   })
 
-
   // Actions
 
   const signin = async (payload) => {
@@ -44,7 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       const { authorization } = response.headers
       const token = authorization.substring(7)
-      
+
       // 토큰 설정
       accessToken.value = token
       client.defaults.headers.common.Authorization = `Bearer ${token}`
@@ -53,7 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
       // 사용자 정보 가져오기
       const myInfoResponse = await client.get('/users/myInfo')
       myinfo.value = myInfoResponse.data
-      
+
       return myInfoResponse
     } catch (error) {
       // 에러 발생 시 상태 초기화
@@ -76,7 +75,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       accessToken.value = token
       client.defaults.headers.common.Authorization = `Bearer ${token}`
-      
+
       const response = await client.get('/users/myInfo')
       myinfo.value = response.data
       return response
@@ -105,12 +104,12 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     // State
     myinfo,
-    
+
     // Getters
     isAuthorized,
     isAdmin,
     isMember,
-    
+
     // Actions
     signin,
     signout,

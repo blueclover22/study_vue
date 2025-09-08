@@ -584,6 +584,7 @@ app.use(pinia)  // Pinia를 Vue 앱에 등록
 - auth.js : 로그인
 - member.js : 회원 
 - codegroup.js : 코드그룹
+- codedetail.js : 코드상세
 
 ---
 ---

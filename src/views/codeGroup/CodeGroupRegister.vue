@@ -1,7 +1,8 @@
 <template>
   <div align="center">
     <h2>코드그룹 등록</h2>
-    <code-group-register-form @add-post="addPost" />
+    <code-group-register-form v-if="!codeGroupStore.loading" @add-post="addPost" />
+    <p v-else>등록 처리 중...</p>
   </div>
 </template>
 
@@ -13,36 +14,37 @@ import router from '@/router/router'
 export default {
   name: 'CodeGroupRegister',
   components: { CodeGroupRegisterForm },
+  
   setup() {
     const codeGroupStore = useCodeGroupStore()
 
     const addPost = async (payload) => {
       const { groupCode, groupName } = payload
+      const result = await codeGroupStore.createCodeGroup({ groupCode, groupName })
 
-      try {
-        const response = await codeGroupStore.createCodeGroup({ groupCode, groupName })
+      if (result.success) {
         alert('등록 완료')
-        console.log(response)
         router.push({
           name: 'CodeGroupReadRouter',
-          params: { groupCode: response.groupCode },
+          params: { groupCode: result.data.groupCode },
         })
-      } catch (error) {
-        if (error.response?.status === 401) {
-          alert('로그인 필요')
+      } else {
+        if (result.error.type === 'auth') {
+          alert(result.error.message)
           router.push({ name: 'SigninRouter' })
-        } else if (error.response?.status === 403) {
-          alert('접근 권한이 없습니다.')
+        } else if (result.error.type === 'permission') {
+          alert(result.error.message)
           router.back()
         } else {
-          alert(error.response?.data?.message || '등록에 실패했습니다.')
+          alert(result.error.message)
         }
       }
     }
 
     return {
-      addPost
+      codeGroupStore,
+      addPost,
     }
-  }
+  },
 }
 </script>

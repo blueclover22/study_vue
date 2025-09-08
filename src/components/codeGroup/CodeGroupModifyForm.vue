@@ -19,7 +19,9 @@
 
     <div>
       <button type="submit">수정</button>
-      <router-link :to="{ name: 'CodeGroupReadRouter', params: { groupCode: codeGroup.groupCode } }">취소</router-link>
+      <router-link :to="{ name: 'CodeGroupReadRouter', params: { groupCode: codeGroup.groupCode } }"
+        >취소</router-link
+      >
     </div>
   </form>
 </template>
@@ -32,7 +34,7 @@ export default {
   props: {
     codeGroup: {
       type: Object,
-      required: true
+      required: true,
     },
   },
 
@@ -41,20 +43,23 @@ export default {
   setup(props, context) {
     const groupName = ref(props.codeGroup.groupName)
 
-    watch(() => props.codeGroup.groupName,(newValue) => {
+    watch(
+      () => props.codeGroup.groupName,
+      (newValue) => {
         groupName.value = newValue
-      })
+      },
+    )
 
     const fireModifyPost = () => {
       context.emit('modify-post', {
         groupCode: props.codeGroup.groupCode,
-        groupName: groupName.value
+        groupName: groupName.value,
       })
     }
 
     return {
       groupName,
-      fireModifyPost
+      fireModifyPost,
     }
   },
 }

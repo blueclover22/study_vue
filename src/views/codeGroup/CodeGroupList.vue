@@ -2,7 +2,9 @@
   <div align="center">
     <h2>코드그룹 목록</h2>
     <router-link :to="{ name: 'CodeGroupRegisterRouter' }">등록</router-link>
-    <code-group-list-form :codeGroups="codeGroupStore.codeGroups" />
+    <code-group-list-form v-if="!codeGroupStore.loading" :codeGroups="codeGroupStore.codeGroups" />
+    <p v-else-if="codeGroupStore.loading">데이터를 불러오는 중...</p>
+    <p v-else>데이터를 불러올 수 없습니다.</p>
   </div>
 </template>
 
@@ -10,6 +12,7 @@
 import CodeGroupListForm from '@/components/codeGroup/CodeGroupListForm.vue'
 import { useCodeGroupStore } from '@/stores/codeGroup'
 import { onMounted } from 'vue'
+import router from '@/router/router'
 
 export default {
   name: 'CodeGroupList',
@@ -19,16 +22,21 @@ export default {
     const codeGroupStore = useCodeGroupStore()
 
     onMounted(async () => {
-      try {
-        await codeGroupStore.fetchCodeGroupList()
-      } catch (error) {
-        console.error('Failed to fetch code group list:', error)
+      const result = await codeGroupStore.fetchCodeGroupList()
+      if (!result.success) {
+        if (result.error.type === 'auth') {
+          alert(result.error.message)
+          router.push({ name: 'SigninRouter' })
+        } else {
+          alert(result.error.message)
+        }
+        console.error('Failed to fetch code group list:', result.error)
       }
     })
 
     return {
-      codeGroupStore
+      codeGroupStore,
     }
-  }
+  },
 }
 </script>
