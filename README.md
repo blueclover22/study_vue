@@ -575,6 +575,79 @@ app.use(pinia)  // Pinia를 Vue 앱에 등록
     Cookies.remove('accessToken')
   }
   ```
+## Pinia defineStore 구현
+- Coposition API 방식
+  - state, getters, actions를 명시적으로 구분하지 않고, Composition API 스타일로 작성
+  - refm reactive, computed 등을 사용하여 상태와 로직을 정의
+  - Vue3의 Composition API와 자연스럽게 통합
+
+  ```js
+  import { defineStore } from 'pinia'
+  import { ref, computed } from 'vue'
+  import client from '@/modules/client'
+
+  export const useCodeGroupStore = defineStore('codeGroup', () => {
+    const codeGroups = ref([])
+
+    const fetchCodeGroups = async () => {
+      try {
+        const response = await client.get('/code-groups')
+        codeGroups.value = response.data
+      } catch (error) {
+        console.error('Failed to fetch code groups:', error)
+      }
+    }
+
+    const codeGroupCount = computed(() => codeGroups.value.length)
+
+    return {
+      codeGroups,
+      fetchCodeGroups,
+      codeGroupCount
+    }
+  })
+  ```
+
+- Options API 방식
+  - state, getter, action을 명시적으로 구분
+  - Vue2의 Options API와 유사함
+
+  ```js
+  import { defineStore } from 'pinia'
+  import client from '@/modules/client'
+
+  export const useCodeGroupStore = defineStore('codeGroup', {
+    state: () => ({
+      codeGroups: [] // 상태 정의
+    }),
+    actions: {
+      async fetchCodeGroups() {
+        try {
+          const response = await client.get('/code-groups')
+          this.codeGroups = response.data
+        } catch (error) {
+          console.error('Failed to fetch code groups:', error)
+        }
+      }
+    },
+    getters: {
+      codeGroupCount: (state) => state.codeGroups.length // getter 정의
+    }
+  })
+  ```
+
+- .vue 파일에서 호출하여 사용하는 방법은 동일
+```js
+import { useCodeGroupStore } from '@/stores/codeGroup'
+
+const codeGroupStore = useCodeGroupStore()
+
+// 상태와 액션 사용
+codeGroupStore.fetchCodeGroups()
+console.log(codeGroupStore.codeGroups)
+console.log(`Code Group Count: ${codeGroupStore.codeGroupCount}`)
+```
+
 
 ---
 ---

@@ -37,7 +37,7 @@ export const useCodeDetailStore = defineStore('codeDetail', () => {
     try {
       const response = await client.get('/codeDetails')
       codeDetails.value = response.data
-      return response.data
+      return { success: true, data: response.data }
     } catch (err) {
       const errorResult = handleError(err, '코드 목록을 불러오는데 실패했습니다.')
       error.value = errorResult
@@ -54,7 +54,7 @@ export const useCodeDetailStore = defineStore('codeDetail', () => {
     try {
       const response = await client.get(`/codeDetails/${groupCode}/${codeValue}`)
       codeDetail.value = response.data
-      return response.data
+      return { success: true, data: response.data }
     } catch (err) {
       const errorResult = handleError(err, '코드 정보를 불러오는데 실패했습니다.')
       error.value = errorResult

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 export default {
   name: 'CodeGroupModifyForm',
@@ -42,13 +42,6 @@ export default {
 
   setup(props, context) {
     const groupName = ref(props.codeGroup.groupName)
-
-    watch(
-      () => props.codeGroup.groupName,
-      (newValue) => {
-        groupName.value = newValue
-      },
-    )
 
     const fireModifyPost = () => {
       context.emit('modify-post', {

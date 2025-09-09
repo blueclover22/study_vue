@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref} from 'vue'
 
 export default {
   name: 'CodeDetailModifyForm',
@@ -66,28 +66,9 @@ export default {
 
   setup(props, context) {
     const groupCode = ref(props.codeDetail.groupCode)
-    watch(
-      () => props.codeDetail.groupCode,
-      (newValue) => {
-        groupCode.value = newValue
-      },
-    )
-
     const codeValue = ref(props.codeDetail.codeValue)
-    watch(
-      () => props.codeDetail.codeValue,
-      (newValue) => {
-        codeValue.value = newValue
-      },
-    )
-
     const codeName = ref(props.codeDetail.codeName)
-    watch(
-      () => props.codeDetail.codeName,
-      (newValue) => {
-        codeName.value = newValue
-      },
-    )
+
 
     const fireModifyPost = () => {
       context.emit('modify-post', {

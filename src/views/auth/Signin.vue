@@ -2,6 +2,7 @@
   <div align="center">
     <h2>Login</h2>
     <signin-form @sign-in="login" />
+    <p><router-link :to="{ name: 'SignupRouter' }">회원가입</router-link></p>
   </div>
 </template>
 
@@ -11,7 +12,7 @@ import router from '@/router/router'
 import { useAuthStore } from '@/stores/auth'
 
 export default {
-  name: 'SigninComponent',
+  name: 'SigninView',
   components: {
     SigninForm,
   },
