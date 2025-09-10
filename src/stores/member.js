@@ -96,6 +96,62 @@ export const useMemberStore = defineStore('member', () => {
     }
   }
 
+  const createMember = async (payload) => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await client.post('/users', payload)
+      members.value.push(response.data)
+      return { success: true, data: response.data }
+    } catch (err) {
+      const errorResult = handleError(err, '회원 등록에 실패했습니다.')
+      error.value = errorResult
+      return { success: false, error: errorResult }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const updateMember = async (userNo, payload) => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await client.put(`/users/${userNo}`, payload)
+      const index = members.value.findIndex((member) => member.userNo === userNo)
+      if (index !== -1) {
+        members.value[index] = response.data
+      }
+      if (member.value && member.value.userNo === userNo) {
+        member.value = response.data
+      }
+      return { success: true, data: response.data }
+    } catch (err) {
+      const errorResult = handleError(err, '회원 수정에 실패했습니다.')
+      error.value = errorResult
+      return { success: false, error: errorResult }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const deleteMember = async (userNo) => {
+    loading.value = true
+    error.value = null
+
+    try {
+      await client.delete(`/users/${userNo}`)
+      return { success: true, data: true }
+    } catch (err) {
+      const errorResult = handleError(err, '회원 삭제에 실패했습니다.')
+      error.value = errorResult
+      return { success: false, error: errorResult }
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     // state
     jobCodes,
@@ -109,5 +165,8 @@ export const useMemberStore = defineStore('member', () => {
     fetchMemberList,
     fetchMember,
     signup,
+    createMember,
+    updateMember,
+    deleteMember,
   }
 })
