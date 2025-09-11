@@ -47,6 +47,7 @@ export default {
         const result = await codeGroupStore.fetchCodeGroup(groupCode)
         if (!result.success) {
           handleError(result)
+          return
         }
       }
     })
@@ -60,6 +61,7 @@ export default {
         router.push({ name: 'CodeGroupReadRouter', params: { groupCode: groupCode } })
       } else {
         handleError(result)
+        return
       }
     }
 

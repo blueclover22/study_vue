@@ -14,6 +14,9 @@
               <td width="120">
                 <router-link :to="{ name: 'CodeDetailListRouter' }">CodeDetail</router-link>
               </td>
+              <td width="120">
+                <router-link :to="{ name: 'MemberListRouter' }">Member</router-link>
+              </td>
             </template>
             <template v-else>
               <td width="120">

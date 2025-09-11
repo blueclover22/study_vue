@@ -39,12 +39,10 @@ export default {
 
       if (result.success) {
         alert('등록 완료')
-        router.push({
-          name: 'CodeGroupReadRouter',
-          params: { groupCode: result.data.groupCode },
-        })
+        router.push({ name: 'CodeGroupListRouter' })
       } else {
         handleError(result)
+        return
       }
     }
 

@@ -9,7 +9,14 @@
     <p v-else-if="codeDetailStore.loading">데이터를 불러오는 중...</p>
     <p v-else>데이터를 불러올 수 없습니다.</p>
     <div v-if="!codeDetailStore.loading && codeDetailStore.codeDetail && codeGroupStore.codeGroups">
-      <router-link :to="{ name: 'CodeDetailModifyRouter', params: { groupCode, codeValue } }"
+      <router-link
+        :to="{
+          name: 'CodeDetailModifyRouter',
+          params: {
+            groupCode: codeDetailStore.codeDetail.groupCode,
+            codeValue: codeDetailStore.codeDetail.codeValue,
+          },
+        }"
         >수정</router-link
       >
       <button @click="deletePost">삭제</button>
@@ -65,6 +72,7 @@ export default {
         const codeDetailResult = await codeDetailStore.fetchCodeDetail(groupCode, codeValue)
         if (!codeDetailResult.success) {
           handleError(codeDetailResult)
+          return
         }
       }
     })
@@ -77,6 +85,7 @@ export default {
         router.push({ name: 'CodeDetailListRouter' })
       } else {
         handleError(result)
+        return
       }
     }
 

@@ -17,7 +17,7 @@
         <tr v-else v-for="member in members" :key="member.userNo">
           <td align="center">{{ member.userNo }}</td>
           <td align="center">
-            <router-link :to="{ name: 'memberReadRouter', params: { userNo: member.userNo } }">{{
+            <router-link :to="{ name: 'MemberReadRouter', params: { userNo: member.userNo } }">{{
               member.userId
             }}</router-link>
           </td>

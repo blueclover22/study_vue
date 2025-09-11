@@ -59,6 +59,7 @@ export default {
         const codeDetailResult = await codeDetailStore.fetchCodeDetail(groupCode, codeValue)
         if (!codeDetailResult.success) {
           handleError(codeDetailResult)
+          return
         }
       }
     })
@@ -78,6 +79,7 @@ export default {
         })
       } else {
         handleError(result)
+        return
       }
     }
 

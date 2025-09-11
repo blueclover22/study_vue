@@ -1,29 +1,27 @@
 <template>
   <div align="center">
-    <h2>코드 등록</h2>
-    <code-detail-register-form
-      v-if="!codeDetailStore.loading"
+    <h2>회원 등록</h2>
+    <member-register-form
+      v-if="!memberStore.loading"
       @add-post="addPost"
-      :codeGroups="codeGroupStore.codeGroups"
+      :jobCodes="memberStore.jobCodes"
     />
     <p v-else>등록 처리 중...</p>
   </div>
 </template>
 
 <script>
-import CodeDetailRegisterForm from '@/components/codeDetail/CodeDetailRegisterForm.vue'
-import { useCodeDetailStore } from '@/stores/codeDetail'
-import { useCodeGroupStore } from '@/stores/codeGroup'
+import MemberRegisterForm from '@/components/member/MemberRegisterForm.vue'
+import { useMemberStore } from '@/stores/member'
 import { onMounted } from 'vue'
 import router from '@/router/router'
 
 export default {
-  name: 'CodeDetailRegister',
-  components: { CodeDetailRegisterForm },
+  name: 'MemberRegister',
+  components: { MemberRegisterForm },
 
   setup() {
-    const codeDetailStore = useCodeDetailStore()
-    const codeGroupStore = useCodeGroupStore()
+    const memberStore = useMemberStore()
 
     const handleError = (result) => {
       if (!result.success) {
@@ -41,7 +39,7 @@ export default {
     }
 
     onMounted(async () => {
-      const result = await codeGroupStore.fetchCodeGroupList()
+      const result = await memberStore.fetchJobCodes()
       if (!result.success) {
         handleError(result)
         return
@@ -49,12 +47,12 @@ export default {
     })
 
     const addPost = async (payload) => {
-      const { groupCode, codeValue, codeName } = payload
-      const result = await codeDetailStore.createCodeDetail({ groupCode, codeValue, codeName })
+      const { userId, userPw, userName, job } = payload
+      const result = await memberStore.createMember({ userId, userPw, userName, job })
 
       if (result.success) {
         alert('등록 완료')
-        router.push({ name: 'CodeDetailListRouter' })
+        router.push({ name: 'MemberListRouter' })
       } else {
         handleError(result)
         return
@@ -62,8 +60,7 @@ export default {
     }
 
     return {
-      codeDetailStore,
-      codeGroupStore,
+      memberStore,
       addPost,
     }
   },

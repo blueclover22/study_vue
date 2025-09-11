@@ -1,28 +1,25 @@
 <template>
   <div align="center">
-    <h2>코드 목록</h2>
-    <router-link :to="{ name: 'CodeDetailRegisterRouter' }">등록</router-link>
-    <code-detail-list-form
-      v-if="!codeDetailStore.loading"
-      :codeDetails="codeDetailStore.codeDetails"
-    />
-    <p v-else-if="codeDetailStore.loading">데이터를 불러오는 중...</p>
+    <h2>회원 목록</h2>
+    <router-link :to="{ name: 'MemberRegisterRouter' }">등록</router-link>
+    <member-list-form v-if="!memberStore.loading" :members="memberStore.members" />
+    <p v-else-if="memberStore.loading">데이터를 불러오는 중...</p>
     <p v-else>데이터를 불러올 수 없습니다.</p>
   </div>
 </template>
 
 <script>
-import CodeDetailListForm from '@/components/codeDetail/CodeDetailListForm.vue'
-import { useCodeDetailStore } from '@/stores/codeDetail'
+import MemberListForm from '@/components/member/MemberListForm.vue'
+import { useMemberStore } from '@/stores/member'
 import { onMounted } from 'vue'
 import router from '@/router/router'
 
 export default {
-  name: 'CodeDetailList',
-  components: { CodeDetailListForm },
+  name: 'MemberList',
+  components: { MemberListForm },
 
   setup() {
-    const codeDetailStore = useCodeDetailStore()
+    const memberStore = useMemberStore()
 
     const handleError = (result) => {
       if (!result.success) {
@@ -40,16 +37,16 @@ export default {
     }
 
     onMounted(async () => {
-      const result = await codeDetailStore.fetchCodeDetailList()
+      const result = await memberStore.fetchMemberList()
       if (!result.success) {
         handleError(result)
-        console.error('Failed to fetch code detail list:', result.error)
+        console.error('Failed to fetch member list:', result.error)
         return
       }
     })
 
     return {
-      codeDetailStore,
+      memberStore,
     }
   },
 }

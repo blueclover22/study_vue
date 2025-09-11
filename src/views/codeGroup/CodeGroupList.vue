@@ -41,6 +41,7 @@ export default {
       if (!result.success) {
         handleError(result)
         console.error('Failed to fetch code group list:', result.error)
+        return
       }
     })
 

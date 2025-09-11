@@ -40,6 +40,7 @@ export default {
       const result = await memberStore.fetchJobCodes()
       if (!result.success) {
         handleError(result)
+        return
       }
     })
 
@@ -52,6 +53,7 @@ export default {
         router.push({ name: 'SigninRouter' })
       } else {
         handleError(result)
+        return
       }
     }
 

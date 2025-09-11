@@ -8,7 +8,13 @@
     <p v-else-if="codeGroupStore.loading">데이터를 불러오는 중...</p>
     <p v-else>데이터를 불러올 수 없습니다.</p>
     <div v-if="!codeGroupStore.loading && codeGroupStore.codeGroup">
-      <router-link :to="{ name: 'CodeGroupModifyRouter', params: { groupCode } }">수정</router-link>
+      <router-link
+        :to="{
+          name: 'CodeGroupModifyRouter',
+          params: { groupCode: codeGroupStore.codeGroup.groupCode },
+        }"
+        >수정</router-link
+      >
       <button @click="deletePost">삭제</button>
       <router-link :to="{ name: 'CodeGroupListRouter' }">목록</router-link>
     </div>
@@ -51,6 +57,7 @@ export default {
         const result = await codeGroupStore.fetchCodeGroup(groupCode)
         if (!result.success) {
           handleError(result)
+          return
         }
       }
     })
@@ -64,6 +71,7 @@ export default {
         router.push({ name: 'CodeGroupListRouter' })
       } else {
         handleError(result)
+        return
       }
     }
 

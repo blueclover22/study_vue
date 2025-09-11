@@ -5,19 +5,19 @@
         <tr>
           <td>번호</td>
           <td>
-            <input type="text" :value="Member.userNo" disabled />
+            <input type="text" :value="member.userNo" disabled />
           </td>
         </tr>
         <tr>
           <td>아이디</td>
           <td>
-            <input type="text" :value="Member.userId" disabled />
+            <input type="text" :value="member.userId" disabled />
           </td>
         </tr>
         <tr>
           <td>사용자명</td>
           <td>
-            <input type="text" :value="Member.userName" disabled />
+            <input type="text" :value="member.userName" disabled />
           </td>
         </tr>
         <tr>
@@ -46,7 +46,7 @@
 
     <div>
       <button type="submit">수정</button>
-      <router-link :to="{ name: 'MemberReadRouter', params: { userNo: Member.userNo } }"
+      <router-link :to="{ name: 'MemberReadRouter', params: { userNo: member.userNo } }"
         >취소</router-link
       >
     </div>
@@ -59,7 +59,7 @@ import { ref } from 'vue'
 export default {
   name: 'MemberModifyForm',
   props: {
-    Member: {
+    member: {
       type: Object,
       required: true,
     },
@@ -71,24 +71,24 @@ export default {
   emits: ['modify-post'],
 
   setup(props, context) {
-    const job = ref(props.Member.job)
-    const auth = ref(props.Member.authList?.[0]?.auth || '')
+    const job = ref(props.member.job)
+    const auth = ref(props.member.authList?.[0]?.auth || '')
 
     const fireModifyPost = () => {
       const authList = auth.value
         ? [
             {
-              userNo: props.Member.userNo,
+              userNo: props.member.userNo,
               auth: auth.value,
             },
           ]
         : []
 
       context.emit('modify-post', {
-        userNo: props.Member.userNo,
-        userId: props.Member.userId,
-        userPw: props.Member.userPw,
-        userName: props.Member.userName,
+        userNo: props.member.userNo,
+        userId: props.member.userId,
+        userPw: props.member.userPw,
+        userName: props.member.userName,
         job: job.value,
         authList: authList,
       })

@@ -5,25 +5,25 @@
         <tr>
           <td>번호</td>
           <td>
-            <input type="text" :value="Member.userNo" disabled />
+            <input type="text" :value="member.userNo" disabled />
           </td>
         </tr>
         <tr>
           <td>아이디</td>
           <td>
-            <input type="text" :value="Member.userId" disabled />
+            <input type="text" :value="member.userId" disabled />
           </td>
         </tr>
         <tr>
           <td>사용자명</td>
           <td>
-            <input type="text" :value="Member.userName" disabled />
+            <input type="text" :value="member.userName" disabled />
           </td>
         </tr>
         <tr>
           <td>직업</td>
           <td>
-            <input type="text" :value="Member.job" disabled />
+            <input type="text" :value="member.job" disabled />
           </td>
         </tr>
         <tr>
@@ -47,7 +47,7 @@ import { ref } from 'vue'
 export default {
   name: 'MemberReadForm',
   props: {
-    Member: {
+    member: {
       type: Object,
       required: true,
     },
@@ -57,7 +57,7 @@ export default {
   },
 
   setup(props) {
-    const auth = ref(props.Member.authList?.[0]?.auth || '')
+    const auth = ref(props.member.authList?.[0]?.auth || '')
 
     return {
       auth,
