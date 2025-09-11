@@ -92,12 +92,6 @@ export const useCodeGroupStore = defineStore('codeGroup', () => {
     try {
       const response = await client.put(`/codeGroups/${groupCode}`, codeGroupData)
 
-      // 목록에서 해당 코드그룹 업데이트
-      const index = codeGroups.value.findIndex((group) => group.groupCode === groupCode)
-      if (index !== -1) {
-        codeGroups.value[index] = response.data
-      }
-
       // 현재 선택된 코드그룹이 수정된 것이면 업데이트
       if (codeGroup.value && codeGroup.value.groupCode === groupCode) {
         codeGroup.value = response.data

@@ -119,10 +119,7 @@ export const useMemberStore = defineStore('member', () => {
 
     try {
       const response = await client.put(`/users/${userNo}`, payload)
-      const index = members.value.findIndex((member) => member.userNo === userNo)
-      if (index !== -1) {
-        members.value[index] = response.data
-      }
+
       if (member.value && member.value.userNo === userNo) {
         member.value = response.data
       }
