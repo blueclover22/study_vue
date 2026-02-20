@@ -20,19 +20,19 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 ## Project Setup
 
 ```sh
-npm install
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 ### Compile and Minify for Production
 
 ```sh
-npm run build
+pnpm run build
 ```
 
 
@@ -46,7 +46,7 @@ npm run build
 - my-project라는 vue 프로젝트 생성
 
 ```sh
-npm create vue@latest my-project
+pnpm create vue@latest my-project
 ```
 
 - 필요한 패키지 선택 
@@ -86,8 +86,8 @@ space to select, a to toggle all, enter to confirm)
 - 프로젝트가 세팅된 폴더에서 터미널 실행하거나 에디터에서 해당 폴더 실행
 ```sh
 cd my-project
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 ---
@@ -99,7 +99,7 @@ npm run dev
 - **package.json**
     - Vue 3.5.18과 Vue Router 4.5.1 사용
     - Vite를 번들러로 사용
-    - npm run dev 명령어로 Vite 개발 서버 실행
+    - pnpm run dev 명령어로 Vite 개발 서버 실행
 
 - **vite.config.js**
     - Vite 설정 파일
