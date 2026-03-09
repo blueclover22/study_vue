@@ -9,6 +9,9 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Server
 - [springboot](https://github.com/blueclover22/study_springboot)
 
+## react + ts
+- [react + ts](https://github.com/blueclover22/study_react_ts)
+
 ## vscode Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
