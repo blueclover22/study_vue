@@ -52,6 +52,12 @@ pnpm run build
 pnpm create vue@latest my-project
 ```
 
+-- TypeScript 사용 여부 확인
+```sh
+◆  Use TypeScript?
+│  ○ Yes / ● No
+``` 
+
 - 필요한 패키지 선택 
     - 지금 선택안해도 나중에 설치 가능
 
@@ -70,14 +76,13 @@ select, a to toggle all, enter to confirm)
 
 - 부가 기능 선택
     - 테스트중인 기능들로 선택 안하는걸 권유
-    - Oxlint : Rust로 작성된 매우 빠른 JavaScript/TypeScript linter
-    - rolldown-vite : Rollup의 Rust 기반 재구현체
 
 ```sh
 ◆  Select experimental features to include in your project: (↑/↓ to navigate,
 space to select, a to toggle all, enter to confirm)
-│  ◻ Oxlint (experimental)
-│  ◻ rolldown-vite (experimental)
+│  ◻ Replace Prettier with Oxfmt
+│  ◻ Vite 8 (beta)
+│  ◻ Vue 3.6 (beta)
 ```
 
 - 프로젝트에 예제 소스 포함 여부 선택
